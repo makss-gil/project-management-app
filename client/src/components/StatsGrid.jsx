@@ -47,7 +47,7 @@ export default function StatsGrid() {
             subtitle: "need attention",
             bgColor: "bg-amber-500/10",
             textColor: "text-amber-500",
-        },
+        }
     ];
 
     useEffect(() => {

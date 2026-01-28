@@ -59,7 +59,7 @@ const syncUserUpdation = inngest.createFunction(
 // inngest function to save WORKSPACE data to a database
 const syncWorkspaceCreation = inngest.createFunction(
     { id: 'sync-workspace-from-clerk' },
-    { event: 'clerk/organization.created' },
+    { event: 'clerk/organization.created'},
     async ({ event }) => {
         const { data } = event;
         await prisma.workspace.create({
@@ -97,7 +97,7 @@ const syncWorkspaceUpdation = inngest.createFunction(
             data: {
                 name: data.name,
                 slug: data.slug,
-                image_url: data.image_url
+                image_url: data.image_url,
             }
         })
 
@@ -126,7 +126,7 @@ const syncWorkspaceMemberCreation = inngest.createFunction(
         const { data } = event;
         await prisma.workspaceMember.create({
             data: {
-                userId: data.userId,
+                userId: data.user_id,
                 workspaceId: data.organization_id,
                 role: String(data.role_name).toUpperCase()
 

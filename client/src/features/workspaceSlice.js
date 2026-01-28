@@ -11,8 +11,8 @@ export const fetchWorkspaces = createAsyncThunk('workspace/fetchWorkspaces',
             console.log(error?.response?.data?.message || error.message)
             return []
         }
-    
-})
+});
+
 const initialState = {
     workspaces: [],
     currentWorkspace: null,
@@ -131,7 +131,7 @@ const workspaceSlice = createSlice({
                     }else{
                         state.currentWorkspace = action.payload[0]
                     }
-                }else{
+                }else{ 
                     state.currentWorkspace = action.payload[0]
                 }
             }
