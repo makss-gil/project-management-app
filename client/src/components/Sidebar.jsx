@@ -4,11 +4,20 @@ import MyTasksSidebar from './MyTasksSidebar'
 import ProjectSidebar from './ProjectsSidebar'
 import WorkspaceDropdown from './WorkspaceDropdown'
 import { FolderOpenIcon, LayoutDashboardIcon, SettingsIcon, UsersIcon } from 'lucide-react'
-import { useClerk } from '@clerk/clerk-react'
+import { useAuth, useClerk } from '@clerk/clerk-react'
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 
-    const { openUserProfile } = useClerk()
+    const { isSignedIn } = useAuth()
+    const { openUserProfile, openSignIn } = useClerk()
+
+    const handleSettings = () => {
+        if (!isSignedIn) {
+            openSignIn()
+            return
+        }
+        openUserProfile()
+    }
 
     const menuItems = [
         { name: 'Dashboard', href: '/', icon: LayoutDashboardIcon },
@@ -41,7 +50,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
                                 <p className='text-sm truncate'>{item.name}</p>
                             </NavLink>
                         ))}
-                        <button onClick={openUserProfile} className='flex w-full items-center gap-3 py-2 px-4 text-gray-800 dark:text-zinc-100 cursor-pointer rounded hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-all'>
+                        <button onClick={handleSettings} className='flex w-full items-center gap-3 py-2 px-4 text-gray-800 dark:text-zinc-100 cursor-pointer rounded hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-all'>
                             <SettingsIcon size={16} />
                             <p className='text-sm truncate'>Settings</p>
                         </button>

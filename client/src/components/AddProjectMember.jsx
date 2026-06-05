@@ -45,7 +45,7 @@ const AddProjectMember = ({ isDialogOpen, setIsDialogOpen }) => {
     return (
         <div className="fixed inset-0 bg-black/20 dark:bg-black/50 backdrop-blur flex items-center justify-center z-50">
             <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 rounded-xl p-6 w-full max-w-md text-zinc-900 dark:text-zinc-200">
-                {/* Header */}
+                {/* Заголовок */}
                 <div className="mb-4">
                     <h2 className="text-xl font-bold flex items-center gap-2">
                         <UserPlus className="size-5 text-zinc-900 dark:text-zinc-200" /> Add Member to Project
@@ -57,7 +57,7 @@ const AddProjectMember = ({ isDialogOpen, setIsDialogOpen }) => {
                     )}
                 </div>
 
-                {/* Form */}
+                {/* Форма */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Email */}
                     <div className="space-y-2">
@@ -66,7 +66,7 @@ const AddProjectMember = ({ isDialogOpen, setIsDialogOpen }) => {
                         </label>
                         <div className="relative">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 w-4 h-4" />
-                            {/* List All non project members from current workspace */}
+                            {/* Список учасників воркспейсу, які не в проєкті */}
                             <select value={email} onChange={(e) => setEmail(e.target.value)} className="pl-10 mt-1 w-full rounded border border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200 text-sm placeholder-zinc-400 dark:placeholder-zinc-500 py-2 focus:outline-none focus:border-blue-500" required >
                                 <option value="">Select a member</option>
                                 {currentWorkspace?.members
@@ -78,7 +78,7 @@ const AddProjectMember = ({ isDialogOpen, setIsDialogOpen }) => {
                         </div>
                     </div>
 
-                    {/* Footer */}
+                    {/* Кнопки дій */}
                     <div className="flex justify-end gap-3 pt-2">
                         <button type="button" onClick={() => setIsDialogOpen(false)} className="px-5 py-2 text-sm rounded border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition" >
                             Cancel

@@ -7,7 +7,10 @@
   "scripts": {
     "postinstall": "npx prisma generate",
     "start": "prisma generate && node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:report": "vitest run 2>&1 | tee test-report.txt"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +29,8 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.11",
-    "prisma": "^6.17.1"
+    "prisma": "^6.17.1",
+    "supertest": "^7.1.4",
+    "vitest": "^3.2.4"
   }
 }

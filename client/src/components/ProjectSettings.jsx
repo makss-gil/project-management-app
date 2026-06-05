@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { Plus, Save } from "lucide-react";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AddProjectMember from "./AddProjectMember";
 import { useDispatch } from "react-redux";
 import {useAuth} from "@clerk/clerk-react"
@@ -57,23 +57,23 @@ export default function ProjectSettings({ project }) {
 
     return (
         <div className="grid lg:grid-cols-2 gap-8">
-            {/* Project Details */}
+            {/* Деталі проєкту */}
             <div className={cardClasses}>
                 <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-300 mb-4">Project Details</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Name */}
+                    {/* Назва */}
                     <div className="space-y-2">
                         <label className={labelClasses}>Project Name</label>
                         <input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClasses} required />
                     </div>
 
-                    {/* Description */}
+                    {/* Опис */}
                     <div className="space-y-2">
                         <label className={labelClasses}>Description</label>
                         <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className={inputClasses + " h-24"} />
                     </div>
 
-                    {/* Status & Priority */}
+                    {/* Статус і пріоритет */}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label className={labelClasses}>Status</label>
@@ -96,7 +96,7 @@ export default function ProjectSettings({ project }) {
                         </div>
                     </div>
 
-                    {/* Timeline */}
+                    {/* Терміни */}
                     <div className="space-y-4 grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <label className={labelClasses}>Start Date</label>
@@ -108,20 +108,20 @@ export default function ProjectSettings({ project }) {
                         </div>
                     </div>
 
-                    {/* Progress */}
+                    {/* Прогрес */}
                     <div className="space-y-2">
                         <label className={labelClasses}>Progress: {formData.progress}%</label>
                         <input type="range" min="0" max="100" step="5" value={formData.progress} onChange={(e) => setFormData({ ...formData, progress: Number(e.target.value) })} className="w-full accent-blue-500 dark:accent-blue-400" />
                     </div>
 
-                    {/* Save Button */}
+                    {/* Кнопка збереження */}
                     <button type="submit" disabled={isSubmitting} className="ml-auto flex items-center text-sm justify-center gap-2 bg-gradient-to-br from-blue-500 to-blue-600 text-white px-4 py-2 rounded" >
                         <Save className="size-4" /> {isSubmitting ? "Saving..." : "Save Changes"}
                     </button>
                 </form>
             </div>
 
-            {/* Team Members */}
+            {/* Учасники команди */}
             <div className="space-y-6">
                 <div className={cardClasses}>
                     <div className="flex items-center justify-between gap-4">
@@ -134,7 +134,7 @@ export default function ProjectSettings({ project }) {
                         <AddProjectMember isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
                     </div>
 
-                    {/* Member List */}
+                    {/* Список учасників */}
                     {project.members.length > 0 && (
                         <div className="space-y-2 mt-2 max-h-32 overflow-y-auto">
                             {project.members.map((member, index) => (

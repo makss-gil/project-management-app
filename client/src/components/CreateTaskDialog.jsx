@@ -45,7 +45,7 @@ export default function CreateTaskDialog({ showCreateTask, setShowCreateTask, pr
             });
             toast.success(data.message);
             dispatch(addTask(data.task));
-            // Optionally, you can dispatch an action to refresh tasks here
+            // Завдання вже оновлено в Redux через dispatch у батьківському компоненті
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message);
         } finally {
@@ -59,19 +59,19 @@ export default function CreateTaskDialog({ showCreateTask, setShowCreateTask, pr
                 <h2 className="text-xl font-bold mb-4">Create New Task</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Title */}
+                    {/* Назва */}
                     <div className="space-y-1">
                         <label htmlFor="title" className="text-sm font-medium">Title</label>
                         <input value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} placeholder="Task title" className="w-full rounded dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-zinc-900 dark:text-zinc-200 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                     </div>
 
-                    {/* Description */}
+                    {/* Опис */}
                     <div className="space-y-1">
                         <label htmlFor="description" className="text-sm font-medium">Description</label>
                         <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="Describe the task" className="w-full rounded dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-zinc-900 dark:text-zinc-200 text-sm mt-1 h-24 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
 
-                    {/* Type & Priority */}
+                    {/* Тип і пріоритет */}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
                             <label className="text-sm font-medium">Type</label>
@@ -94,7 +94,7 @@ export default function CreateTaskDialog({ showCreateTask, setShowCreateTask, pr
                         </div>
                     </div>
 
-                    {/* Assignee and Status */}
+                    {/* Виконавець і статус */}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
                             <label className="text-sm font-medium">Assignee</label>
@@ -118,7 +118,7 @@ export default function CreateTaskDialog({ showCreateTask, setShowCreateTask, pr
                         </div>
                     </div>
 
-                    {/* Due Date */}
+                    {/* Термін виконання */}
                     <div className="space-y-1">
                         <label className="text-sm font-medium">Due Date</label>
                         <div className="flex items-center gap-2">
@@ -132,7 +132,7 @@ export default function CreateTaskDialog({ showCreateTask, setShowCreateTask, pr
                         )}
                     </div>
 
-                    {/* Footer */}
+                    {/* Кнопки дій */}
                     <div className="flex justify-end gap-2 pt-2">
                         <button type="button" onClick={() => setShowCreateTask(false)} className="rounded border border-zinc-300 dark:border-zinc-700 px-5 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800 transition" >
                             Cancel

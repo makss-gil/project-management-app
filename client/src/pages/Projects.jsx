@@ -3,8 +3,11 @@ import { useSelector } from "react-redux";
 import { Plus, Search, FolderOpen } from "lucide-react";
 import ProjectCard from "../components/ProjectCard";
 import CreateProjectDialog from "../components/CreateProjectDialog";
+import { useRequireAuth } from "../hooks/useRequireAuth";
 
 export default function Projects() {
+
+    const { requireAuth } = useRequireAuth();
     
     const projects = useSelector(
         (state) => state?.workspace?.currentWorkspace?.projects || []
@@ -48,19 +51,19 @@ export default function Projects() {
 
     return (
         <div className="space-y-6 max-w-6xl mx-auto">
-            {/* Header */}
+            {/* Заголовок */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-1"> Projects </h1>
                     <p className="text-gray-500 dark:text-zinc-400 text-sm"> Manage and track your projects </p>
                 </div>
-                <button onClick={() => setIsDialogOpen(true)} className="flex items-center px-5 py-2 text-sm rounded bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:opacity-90 transition" >
+                <button onClick={() => requireAuth(() => setIsDialogOpen(true))} className="flex items-center px-5 py-2 text-sm rounded bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:opacity-90 transition" >
                     <Plus className="size-4 mr-2" /> New Project
                 </button>
                 <CreateProjectDialog isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
             </div>
 
-            {/* Search and Filters */}
+            {/* Пошук і фільтри */}
             <div className="flex flex-col md:flex-row gap-4">
                 <div className="relative w-full max-w-sm">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-zinc-400 w-4 h-4" />
@@ -82,7 +85,7 @@ export default function Projects() {
                 </select>
             </div>
 
-            {/* Projects Grid */}
+            {/* Сітка проєктів */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProjects.length === 0 ? (
                     <div className="col-span-full text-center py-16">
@@ -95,7 +98,7 @@ export default function Projects() {
                         <p className="text-gray-500 dark:text-zinc-400 mb-6 text-sm">
                             Create your first project to get started
                         </p>
-                        <button onClick={() => setIsDialogOpen(true)} className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mx-auto text-sm" >
+                        <button onClick={() => requireAuth(() => setIsDialogOpen(true))} className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mx-auto text-sm" >
                             <Plus className="size-4" />
                             Create Project
                         </button>

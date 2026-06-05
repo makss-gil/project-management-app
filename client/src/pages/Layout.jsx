@@ -5,49 +5,33 @@ import { Outlet } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadTheme } from '../features/themeSlice'
 import { Loader2Icon } from 'lucide-react'
-import { useUser, SignIn, useAuth, CreateOrganization } from '@clerk/clerk-react'
+import { useUser, useAuth } from '@clerk/clerk-react'
 import { fetchWorkspaces } from '../features/workspaceSlice'
 
 const Layout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    const { loading, workspaces } = useSelector((state) => state.workspace)
+    const { hasFetched } = useSelector((state) => state.workspace)
     const dispatch = useDispatch()
     const {user, isLoaded} = useUser()
     const {getToken} = useAuth()
 
-    // Initial load of theme
+    // Початкове завантаження теми
     useEffect(() => {
         dispatch(loadTheme())
     }, [])
 
-    // initial load of workspaces
-    useEffect(()=>{
-        if(isLoaded && user  && workspaces.length === 0){
-            dispatch(fetchWorkspaces({getToken}))
+    // Початкове завантаження воркспейсів (лише для авторизованих, один раз за сесію)
+    useEffect(() => {
+        if (isLoaded && user && !hasFetched) {
+            dispatch(fetchWorkspaces({ getToken }))
         }
-    }, [user, isLoaded])
+    }, [isLoaded, user, hasFetched, dispatch, getToken])
 
-    if(!user){
-        return (
-            <div className='flex items-center justify-center h-screen bg-white dark:bg-zinc-950'>
-                <SignIn />
-            </div>
-        )
-    }
-
-    if (loading) return (
+    if (!isLoaded) return (
         <div className='flex items-center justify-center h-screen bg-white dark:bg-zinc-950'>
             <Loader2Icon className="size-7 text-blue-500 animate-spin" />
         </div>
     )
-
-    if(user && workspaces.length === 0){
-        return(
-            <div className='min-h-screen flex justify-center items-center'>
-                <CreateOrganization />
-            </div>
-        )
-    }
 
     return (
         <div className="flex bg-white dark:bg-zinc-950 text-gray-900 dark:text-slate-100">

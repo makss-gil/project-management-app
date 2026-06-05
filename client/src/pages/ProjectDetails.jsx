@@ -55,7 +55,7 @@ export default function ProjectDetail() {
 
     return (
         <div className="space-y-5 max-w-6xl mx-auto text-zinc-900 dark:text-white">
-            {/* Header */}
+            {/* Заголовок */}
             <div className="flex max-md:flex-col gap-4 flex-wrap items-start justify-between max-w-6xl">
                 <div className="flex items-center gap-4">
                     <button className="p-1 rounded hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-400" onClick={() => navigate('/projects')}>
@@ -74,7 +74,7 @@ export default function ProjectDetail() {
                 </button>
             </div>
 
-            {/* Info Cards */}
+            {/* Інформаційні картки */}
             <div className="grid grid-cols-2 sm:flex flex-wrap gap-6">
                 {[
                     { label: "Total Tasks", value: tasks.length, color: "text-zinc-900 dark:text-white" },
@@ -92,7 +92,7 @@ export default function ProjectDetail() {
                 ))}
             </div>
 
-            {/* Tabs */}
+            {/* Вкладки */}
             <div>
                 <div className="inline-flex flex-wrap max-sm:grid grid-cols-3 gap-2 border border-zinc-200 dark:border-zinc-800 rounded overflow-hidden">
                     {[
@@ -132,7 +132,7 @@ export default function ProjectDetail() {
                 </div>
             </div>
 
-            {/* Create Task Modal */}
+            {/* Модальне вікно створення завдання */}
             {showCreateTask && <CreateTaskDialog showCreateTask={showCreateTask} setShowCreateTask={setShowCreateTask} projectId={id} />}
         </div>
     );

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { CheckCircle, Clock, AlertTriangle, Users, ArrowRightIcon } from "lucide-react";
 
-// Colors for charts and priorities
+// Кольори для діаграм та пріоритетів
 const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
 const PRIORITY_COLORS = {
     LOW: "text-red-600 bg-red-200 dark:text-red-500 dark:bg-red-600",
@@ -41,7 +41,7 @@ const ProjectAnalytics = ({ project, tasks }) => {
         return {
             stats,
             statusData: Object.entries(statusMap).map(([k, v]) => ({ name: k.replace("_", " "), value: v })),
-            typeData: Object.entries(typeMap).filter(([_, v]) => v > 0).map(([k, v]) => ({ name: k, value: v })),
+            typeData: Object.entries(typeMap).filter(([, v]) => v > 0).map(([k, v]) => ({ name: k, value: v })),
             priorityData: Object.entries(priorityMap).map(([k, v]) => ({
                 name: k,
                 value: v,
@@ -85,7 +85,7 @@ const ProjectAnalytics = ({ project, tasks }) => {
 
     return (
         <div className="space-y-6">
-            {/* Metrics */}
+            {/* Метрики */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {metrics.map((m, i) => (
                     <div
@@ -103,9 +103,9 @@ const ProjectAnalytics = ({ project, tasks }) => {
                 ))}
             </div>
 
-            {/* Charts */}
+            {/* Діаграми */}
             <div className="grid lg:grid-cols-2 gap-6">
-                {/* Tasks by Status */}
+                {/* Завдання за статусом */}
                 <div className="not-dark:bg-white dark:bg-gradient-to-br dark:from-zinc-800/70 dark:to-zinc-900/50 border border-zinc-300 dark:border-zinc-800 rounded-lg p-6">
                     <h2 className="text-zinc-900 dark:text-white mb-4 font-medium">Tasks by Status</h2>
                     <ResponsiveContainer width="100%" height={300}>
@@ -122,7 +122,7 @@ const ProjectAnalytics = ({ project, tasks }) => {
                     </ResponsiveContainer>
                 </div>
 
-                {/* Tasks by Type */}
+                {/* Завдання за типом */}
                 <div className="not-dark:bg-white dark:bg-gradient-to-br dark:from-zinc-800/70 dark:to-zinc-900/50 border border-zinc-300 dark:border-zinc-800 rounded-lg p-6">
                     <h2 className="text-zinc-900 dark:text-white mb-4 font-medium">Tasks by Type</h2>
                     <ResponsiveContainer width="100%" height={300}>
@@ -145,7 +145,7 @@ const ProjectAnalytics = ({ project, tasks }) => {
                 </div>
             </div>
 
-            {/* Priority Breakdown */}
+            {/* Розподіл за пріоритетом */}
             <div className="not-dark:bg-white dark:bg-gradient-to-br dark:from-zinc-800/70 dark:to-zinc-900/50 border border-zinc-300 dark:border-zinc-800 rounded-lg p-6">
                 <h2 className="text-zinc-900 dark:text-white mb-4 font-medium">Tasks by Priority</h2>
                 <div className="space-y-4">

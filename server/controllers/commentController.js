@@ -1,16 +1,20 @@
 import prisma from "../configs/prisma.js";
 
-// Add comment
+// Додавання коментаря
 export const addComment = async (req, res) => {
     try {
         const { userId } = await req.auth();
         const { content,taskId } = req.body;
 
-        // check if user is projectmember
         const task = await prisma.task.findUnique({
             where: { id: taskId },
         });
-        
+
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        // Перевірка, чи користувач є учасником проєкту
         const project = await prisma.project.findUnique({
             where: { id: task.projectId },
             include: { members: { include: { user: true } } },
@@ -33,7 +37,7 @@ export const addComment = async (req, res) => {
     }
 };
 
-// Get comments for task
+// Отримання коментарів для завдання
 export const getTaskComments = async (req, res) => {
     try {
         const { taskId } = req.params;

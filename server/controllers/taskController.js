@@ -1,7 +1,7 @@
 import prisma from "../configs/prisma.js";
 import { inngest } from "../inngest/index.js";
 
-// Create task
+// Створення завдання
 export const createTask = async (req, res) => {
     try {
 
@@ -9,7 +9,7 @@ export const createTask = async (req, res) => {
         const { projectId, title, description, type, status, priority, assigneeId, due_date } = req.body;
         const origin = req.get('origin');
 
-        // Check if user has admin role for project
+        // Перевірка, чи користувач є керівником проєкту (team_lead)
         const project = await prisma.project.findUnique({
             where: { id: projectId },
             include: { members: { include: { user: true } } },
@@ -58,7 +58,7 @@ export const createTask = async (req, res) => {
 };
 
 
-// Update task
+// Оновлення завдання
 export const updateTask = async (req, res) => {
     try {
 
@@ -83,9 +83,19 @@ export const updateTask = async (req, res) => {
             return res.status(403).json({ message: "You don't have admin privileges for this project" });
         }
 
+        const { title, description, type, status, priority, assigneeId, due_date } = req.body;
+
         const updatedTask = await prisma.task.update({
             where: { id: req.params.id },
-            data: req.body,
+            data: {
+                ...(title !== undefined && { title }),
+                ...(description !== undefined && { description }),
+                ...(type !== undefined && { type }),
+                ...(status !== undefined && { status }),
+                ...(priority !== undefined && { priority }),
+                ...(assigneeId !== undefined && { assigneeId }),
+                ...(due_date !== undefined && { due_date: new Date(due_date) }),
+            },
         });
 
         res.json({ message: "Task updated successfully", task: updatedTask });
@@ -95,7 +105,7 @@ export const updateTask = async (req, res) => {
     }
 };
 
-// Delete task
+// Видалення завдання
 export const deleteTask = async (req, res) => {
     try {
 

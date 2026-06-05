@@ -97,7 +97,7 @@ const ProjectTasks = ({ tasks }) => {
 
     return (
         <div>
-            {/* Filters */}
+            {/* Фільтри */}
             <div className="flex flex-wrap gap-4 mb-4">
                 {["status", "type", "priority", "assignee"].map((name) => {
                     const options = {
@@ -135,7 +135,7 @@ const ProjectTasks = ({ tasks }) => {
                     );
                 })}
 
-                {/* Reset filters */}
+                {/* Скинути фільтри */}
                 {(filters.status || filters.type || filters.priority || filters.assignee) && (
                     <button type="button" onClick={() => setFilters({ status: "", type: "", priority: "", assignee: "" })} className="px-3 py-1 flex items-center gap-2 rounded bg-gradient-to-br from-purple-400 to-purple-500 text-zinc-100 dark:text-zinc-200 text-sm transition-colors" >
                         <XIcon className="size-3" /> Reset
@@ -149,10 +149,10 @@ const ProjectTasks = ({ tasks }) => {
                 )}
             </div>
 
-            {/* Tasks Table */}
+            {/* Таблиця завдань */}
             <div className="overflow-auto rounded-lg lg:border border-zinc-300 dark:border-zinc-800">
                 <div className="w-full">
-                    {/* Desktop/Table View */}
+                    {/* Вигляд таблиці (десктоп) */}
                     <div className="hidden lg:block overflow-x-auto">
                         <table className="min-w-full text-sm text-left not-dark:bg-white text-zinc-900 dark:text-zinc-300">
                             <thead className="text-xs uppercase dark:bg-zinc-800/70 text-zinc-500 dark:text-zinc-400 ">
@@ -224,7 +224,7 @@ const ProjectTasks = ({ tasks }) => {
                         </table>
                     </div>
 
-                    {/* Mobile/Card View */}
+                    {/* Вигляд карток (мобільна) */}
                     <div className="lg:hidden flex flex-col gap-4">
                         {filteredTasks.length > 0 ? (
                             filteredTasks.map((task) => {

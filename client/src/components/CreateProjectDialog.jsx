@@ -65,19 +65,19 @@ const CreateProjectDialog = ({ isDialogOpen, setIsDialogOpen }) => {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Project Name */}
+                    {/* Назва проєкту */}
                     <div>
                         <label className="block text-sm mb-1">Project Name</label>
                         <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Enter project name" className="w-full px-3 py-2 rounded dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 mt-1 text-zinc-900 dark:text-zinc-200 text-sm" required />
                     </div>
 
-                    {/* Description */}
+                    {/* Опис */}
                     <div>
                         <label className="block text-sm mb-1">Description</label>
                         <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="Describe your project" className="w-full px-3 py-2 rounded dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 mt-1 text-zinc-900 dark:text-zinc-200 text-sm h-20" />
                     </div>
 
-                    {/* Status & Priority */}
+                    {/* Статус і пріоритет */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm mb-1">Status</label>
@@ -100,7 +100,7 @@ const CreateProjectDialog = ({ isDialogOpen, setIsDialogOpen }) => {
                         </div>
                     </div>
 
-                    {/* Dates */}
+                    {/* Дати */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm mb-1">Start Date</label>
@@ -112,7 +112,7 @@ const CreateProjectDialog = ({ isDialogOpen, setIsDialogOpen }) => {
                         </div>
                     </div>
 
-                    {/* Lead */}
+                    {/* Керівник */}
                     <div>
                         <label className="block text-sm mb-1">Project Lead</label>
                         <select value={formData.team_lead} onChange={(e) => setFormData({ ...formData, team_lead: e.target.value, team_members: e.target.value ? [...new Set([...formData.team_members, e.target.value])] : formData.team_members, })} className="w-full px-3 py-2 rounded dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 mt-1 text-zinc-900 dark:text-zinc-200 text-sm" >
@@ -125,7 +125,7 @@ const CreateProjectDialog = ({ isDialogOpen, setIsDialogOpen }) => {
                         </select>
                     </div>
 
-                    {/* Team Members */}
+                    {/* Учасники команди */}
                     <div>
                         <label className="block text-sm mb-1">Team Members</label>
                         <select className="w-full px-3 py-2 rounded dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 mt-1 text-zinc-900 dark:text-zinc-200 text-sm"
@@ -159,7 +159,7 @@ const CreateProjectDialog = ({ isDialogOpen, setIsDialogOpen }) => {
                         )}
                     </div>
 
-                    {/* Footer */}
+                    {/* Кнопки дій */}
                     <div className="flex justify-end gap-3 pt-2 text-sm">
                         <button type="button" onClick={() => setIsDialogOpen(false)} className="px-4 py-2 rounded border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-800" >
                             Cancel

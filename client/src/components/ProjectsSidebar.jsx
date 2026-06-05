@@ -52,7 +52,7 @@ const ProjectSidebar = () => {
                         {expandedProjects.has(project.id) && (
                             <div className="ml-5 mt-1 space-y-1">
                                 {getProjectSubItems(project.id).map((subItem) => {
-                                    // checking if the current path matches the sub-item's URL
+                                    // Перевірка, чи поточний шлях збігається з URL підпункту
                                     const isActive =
                                         location.pathname === `/projectsDetail` &&
                                         searchParams.get('id') === project.id &&

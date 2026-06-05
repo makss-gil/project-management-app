@@ -1,16 +1,24 @@
 import { useState, useRef, useEffect } from "react";
-import { ChevronDown, Check, Plus } from "lucide-react";
+import { ChevronDown, Check, Plus, Building2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentWorkspace } from "../features/workspaceSlice";
 import { useNavigate } from "react-router-dom";
-import { dummyWorkspaces } from "../assets/assets";
-import { useClerk, useOrganizationList } from "@clerk/clerk-react"
+import { useAuth, useClerk, useOrganizationList } from "@clerk/clerk-react"
 
 function WorkspaceDropdown() {
 
-    const {setActive, userMemberships, isLoaded} = useOrganizationList({userMemberships: true})
+    const { isSignedIn } = useAuth()
+    const {setActive, userMemberships, isLoaded} = useOrganizationList({userMemberships: isSignedIn})
+    const { openCreateOrganization, openSignIn } = useClerk()
 
-    const {openCreateOrganization} = useClerk()
+    const handleCreateWorkspace = () => {
+        setIsOpen(false)
+        if (!isSignedIn) {
+            openSignIn()
+            return
+        }
+        openCreateOrganization()
+    }
 
     const { workspaces } = useSelector((state) => state.workspace);
     const currentWorkspace = useSelector((state) => state.workspace?.currentWorkspace || null);
@@ -27,7 +35,7 @@ function WorkspaceDropdown() {
         navigate('/')
     }
 
-    // Close dropdown on outside click
+    // Закриття випадаючого списку при кліку поза ним
     useEffect(() => {
         function handleClickOutside(event) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -48,13 +56,21 @@ function WorkspaceDropdown() {
         <div className="relative m-4" ref={dropdownRef}>
             <button onClick={() => setIsOpen(prev => !prev)} className="w-full flex items-center justify-between p-3 h-auto text-left rounded hover:bg-gray-100 dark:hover:bg-zinc-800" >
                 <div className="flex items-center gap-3">
-                    <img src={currentWorkspace?.image_url} alt={currentWorkspace?.name} className="w-8 h-8 rounded shadow" />
+                    {currentWorkspace?.image_url ? (
+                        <img src={currentWorkspace.image_url} alt={currentWorkspace.name} className="w-8 h-8 rounded shadow" />
+                    ) : (
+                        <div className="w-8 h-8 rounded shadow bg-gray-100 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                            <Building2 className="w-4 h-4 text-gray-400 dark:text-zinc-500" />
+                        </div>
+                    )}
                     <div className="min-w-0 flex-1">
                         <p className="font-semibold text-gray-800 dark:text-white text-sm truncate">
-                            {currentWorkspace?.name || "Select Workspace"}
+                            {currentWorkspace?.name || (isSignedIn ? "No Workspace Selected" : "Guest Mode")}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-zinc-400 truncate">
-                            {workspaces.length} workspace{workspaces.length !== 1 ? "s" : ""}
+                            {isSignedIn
+                                ? `${workspaces.length} workspace${workspaces.length !== 1 ? "s" : ""}`
+                                : "Увійдіть для доступу"}
                         </p>
                     </div>
                 </div>
@@ -67,31 +83,49 @@ function WorkspaceDropdown() {
                         <p className="text-xs text-gray-500 dark:text-zinc-400 uppercase tracking-wider mb-2 px-2">
                             Workspaces
                         </p>
-                        {userMemberships.data.map(({organization}) => (
-                            <div key={organization.id} onClick={() => onSelectWorkspace(organization.id)} className="flex items-center gap-3 p-2 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800" >
-                                <img src={organization.imageUrl} alt={organization.name} className="w-6 h-6 rounded" />
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-gray-800 dark:text-white truncate">
-                                        {organization.name}
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-zinc-400 truncate">
-                                        {organization.membersCount || 0} members
-                                    </p>
-                                </div>
-                                {currentWorkspace?.id === organization.id && (
-                                    <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-                                )}
+                        {!isSignedIn ? (
+                            <div className="px-2 py-3 text-center">
+                                <p className="text-sm text-gray-500 dark:text-zinc-400 mb-3">
+                                    Увійдіть, щоб отримати доступ до воркспейсів
+                                </p>
+                                <button
+                                    onClick={() => { openSignIn(); setIsOpen(false) }}
+                                    className="w-full px-4 py-2 text-sm font-medium rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:opacity-90 transition"
+                                >
+                                    Увійти
+                                </button>
                             </div>
-                        ))}
+                        ) : (
+                            userMemberships.data?.map(({organization}) => (
+                                <div key={organization.id} onClick={() => onSelectWorkspace(organization.id)} className="flex items-center gap-3 p-2 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-zinc-800" >
+                                    <img src={organization.imageUrl} alt={organization.name} className="w-6 h-6 rounded" />
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium text-gray-800 dark:text-white truncate">
+                                            {organization.name}
+                                        </p>
+                                        <p className="text-xs text-gray-500 dark:text-zinc-400 truncate">
+                                            {organization.membersCount || 0} members
+                                        </p>
+                                    </div>
+                                    {currentWorkspace?.id === organization.id && (
+                                        <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                                    )}
+                                </div>
+                            ))
+                        )}
                     </div>
 
-                    <hr className="border-gray-200 dark:border-zinc-700" />
+                    {isSignedIn && (
+                        <>
+                            <hr className="border-gray-200 dark:border-zinc-700" />
 
-                    <div onClick={()=> {openCreateOrganization(); setIsOpen(false)}} className="p-2 cursor-pointer rounded group hover:bg-gray-100 dark:hover:bg-zinc-800" >
-                        <p className="flex items-center text-xs gap-2 my-1 w-full text-blue-600 dark:text-blue-400 group-hover:text-blue-500 dark:group-hover:text-blue-300">
-                            <Plus className="w-4 h-4" /> Create Workspace
-                        </p>
-                    </div>
+                            <div onClick={handleCreateWorkspace} className="p-2 cursor-pointer rounded group hover:bg-gray-100 dark:hover:bg-zinc-800" >
+                                <p className="flex items-center text-xs gap-2 my-1 w-full text-blue-600 dark:text-blue-400 group-hover:text-blue-500 dark:group-hover:text-blue-300">
+                                    <Plus className="w-4 h-4" /> Create Workspace
+                                </p>
+                            </div>
+                        </>
+                    )}
                 </div>
             )}
         </div>

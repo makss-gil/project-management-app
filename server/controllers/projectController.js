@@ -1,13 +1,13 @@
 import prisma from "../configs/prisma.js";
 
-// Create project
+// Створення проєкту
 export const createProject = async (req, res) => {
     try {
 
         const { userId } = await req.auth();
         const { workspaceId, description, name, status, start_date, end_date, team_members, team_lead, progress, priority } = req.body;
 
-        //check if user has admin role for workspace
+        // Перевірка ролі ADMIN у воркспейсі
         const workspace = await prisma.workspace.findUnique({
             where: { id: workspaceId },
             include: { members: { include: { user: true } } },
@@ -21,7 +21,7 @@ export const createProject = async (req, res) => {
             return res.status(403).json({ message: "You don't have permission to create projects in this workspace" });
         }
 
-        // Get Team Lead using email
+        // Пошук керівника команди за email
         const teamLead = await prisma.user.findUnique({
             where: { email: team_lead },
             select: { id: true },
@@ -41,7 +41,7 @@ export const createProject = async (req, res) => {
             }
         });
 
-        // Add members to project if they are in the workspace
+        // Додавання учасників до проєкту, якщо вони є у воркспейсі
         if (team_members?.length > 0) {
             const membersToAdd = []
             workspace.members.forEach(member => {
@@ -75,14 +75,14 @@ export const createProject = async (req, res) => {
     }
 };
 
-// Update project
+// Оновлення проєкту
 export const updateProject = async (req, res) => {
     try {
 
         const { userId } = await req.auth();
         const { id, workspaceId, description, name, status, start_date, end_date, progress, priority } = req.body;
 
-        // check if user has admin role for workspace
+        // Перевірка ролі ADMIN у воркспейсі
         const workspace = await prisma.workspace.findUnique({
             where: { id: workspaceId },
             include: { members: { include: { user: true } } },
@@ -92,7 +92,7 @@ export const updateProject = async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        // check if user has admin role for project
+        // Перевірка прав: ADMIN воркспейсу або team_lead проєкту
         if (!workspace.members.some((member) => member.userId === userId && member.role === "ADMIN")) {
 
             const project = await prisma.project.findUnique({
@@ -128,14 +128,14 @@ export const updateProject = async (req, res) => {
 };
 
 
-// Add Member to Project
+// Додавання учасника до проєкту
 export const addMember = async (req, res) => {
     try {
         const { userId } = await req.auth();
         const { projectId } = req.params;
         const { email } = req.body;
 
-        // Check if user is project lead
+        // Перевірка, чи користувач є керівником проєкту
         const project = await prisma.project.findUnique({
             where: { id: projectId },
             include: { members: { include: { user: true } } },
@@ -146,11 +146,11 @@ export const addMember = async (req, res) => {
         }
 
         if (project.team_lead !== userId) {
-            return res.status(404).json({ message: "Only project lead can add members" });
+            return res.status(403).json({ message: "Only project lead can add members" });
         }
 
-        // Check if user is already a member
-        const existingMember = project.members.find((member) => member.email === email);
+        // Перевірка, чи користувач вже є учасником
+        const existingMember = project.members.find((member) => member.user.email === email);
 
         if (existingMember) {
             return res.status(400).json({ message: "User is already a member" });

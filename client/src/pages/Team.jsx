@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { UsersIcon, Search, UserPlus, Shield, Activity } from "lucide-react";
 import InviteMemberDialog from "../components/InviteMemberDialog";
 import { useSelector } from "react-redux";
+import { useRequireAuth } from "../hooks/useRequireAuth";
 
 const Team = () => {
+
+    const { requireAuth } = useRequireAuth();
 
     const [tasks, setTasks] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -25,7 +28,7 @@ const Team = () => {
 
     return (
         <div className="space-y-6 max-w-6xl mx-auto">
-            {/* Header */}
+            {/* Заголовок */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                 <div>
                     <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-1">Team</h1>
@@ -33,15 +36,15 @@ const Team = () => {
                         Manage team members and their contributions
                     </p>
                 </div>
-                <button onClick={() => setIsDialogOpen(true)} className="flex items-center px-5 py-2 rounded text-sm bg-gradient-to-br from-blue-500 to-blue-600 hover:opacity-90 text-white transition" >
+                <button onClick={() => requireAuth(() => setIsDialogOpen(true))} className="flex items-center px-5 py-2 rounded text-sm bg-gradient-to-br from-blue-500 to-blue-600 hover:opacity-90 text-white transition" >
                     <UserPlus className="w-4 h-4 mr-2" /> Invite Member
                 </button>
                 <InviteMemberDialog isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
             </div>
 
-            {/* Stats Cards */}
+            {/* Картки статистики */}
             <div className="flex flex-wrap gap-4">
-                {/* Total Members */}
+                {/* Усього учасників */}
                 <div className="max-sm:w-full dark:bg-gradient-to-br dark:from-zinc-800/70 dark:to-zinc-900/50 border border-gray-300 dark:border-zinc-800 rounded-lg p-6">
                     <div className="flex items-center justify-between gap-8 md:gap-22">
                         <div>
@@ -54,7 +57,7 @@ const Team = () => {
                     </div>
                 </div>
 
-                {/* Active Projects */}
+                {/* Активні проєкти */}
                 <div className="max-sm:w-full dark:bg-gradient-to-br dark:from-zinc-800/70 dark:to-zinc-900/50 border border-gray-300 dark:border-zinc-800 rounded-lg p-6">
                     <div className="flex items-center justify-between gap-8 md:gap-22">
                         <div>
@@ -69,7 +72,7 @@ const Team = () => {
                     </div>
                 </div>
 
-                {/* Total Tasks */}
+                {/* Усього завдань */}
                 <div className="max-sm:w-full dark:bg-gradient-to-br dark:from-zinc-800/70 dark:to-zinc-900/50 border border-gray-300 dark:border-zinc-800 rounded-lg p-6">
                     <div className="flex items-center justify-between gap-8 md:gap-22">
                         <div>
@@ -83,13 +86,13 @@ const Team = () => {
                 </div>
             </div>
 
-            {/* Search */}
+            {/* Пошук */}
             <div className="relative max-w-md">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-zinc-400 size-3" />
                 <input placeholder="Search team members..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-8 w-full text-sm rounded-md border border-gray-300 dark:border-zinc-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-400 py-2 focus:outline-none focus:border-blue-500" />
             </div>
 
-            {/* Team Members */}
+            {/* Учасники команди */}
             <div className="w-full">
                 {filteredUsers.length === 0 ? (
                     <div className="col-span-full text-center py-16">
@@ -109,7 +112,7 @@ const Team = () => {
                     </div>
                 ) : (
                     <div className="max-w-4xl w-full">
-                        {/* Desktop Table */}
+                        {/* Таблиця (десктоп) */}
                         <div className="hidden sm:block overflow-x-auto rounded-md border border-gray-200 dark:border-zinc-800">
                             <table className="min-w-full divide-y divide-gray-200 dark:divide-zinc-800">
                                 <thead className="bg-gray-50 dark:bg-zinc-900/50">
@@ -160,7 +163,7 @@ const Team = () => {
                             </table>
                         </div>
 
-                        {/* Mobile Cards */}
+                        {/* Картки (мобільна) */}
                         <div className="sm:hidden space-y-3">
                             {filteredUsers.map((user) => (
                                 <div

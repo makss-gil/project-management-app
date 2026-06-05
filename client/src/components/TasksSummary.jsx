@@ -9,7 +9,7 @@ export default function TasksSummary() {
     const { user } = useUser();
     const [tasks, setTasks] = useState([]);
 
-    // Get all tasks for all projects in current workspace
+    // Отримання всіх завдань з проєктів поточного воркспейсу
     useEffect(() => {
         if (currentWorkspace) {
             setTasks(currentWorkspace.projects.flatMap((project) => project.tasks));
